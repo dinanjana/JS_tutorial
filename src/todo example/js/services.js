@@ -1,21 +1,24 @@
 (function  (window) {
-	// body...
-	function Storage(name){
+
+	function LocalStorage(name){
 		if (typeof(Storage) !== "undefined") {
     // Code for localStorage/sessionStorage.
-    		this.storage = JSON.parse(localStorage.name);
+				if(localStorage.getItem(name)==null){
+					this.storage = {};
+				}else{
+					this.storage = JSON.parse(localStorage.getItem(name));
+				}
 		} else {
     // Sorry! No Web Storage support..
-    		this.storage = [];
-		}		
-		
+    		this.storage = {};
+		}
 	}
 
-	Storage.prototype.addItem=(task)=>{
+	LocalStorage.prototype.addItem=(task)=>{
 		this.storage.taskList.push(task);
 	}
 
-	Storage.prototype.removeItem=(taskID)=>{
+	LocalStorage.prototype.removeItem=(taskID)=>{
 		let taskList=this.storage.taskList;
 		let len = this.storage.taskList.length;
 		for (var i=0; i<len ; i++ ){
@@ -24,9 +27,12 @@
 				break;
 			}
 		}
-		//this.storage.taskList=taskList;
+	}
+
+	LocalStorage.prototype.cleanup=(name)=>{
+		localStorage.setItem(name,this.storage);
 	}
 
 	window.app=window.app||{};
-	window.app.Storage=Storage;
+	window.app.LocalStorage=LocalStorage;
 })(window);

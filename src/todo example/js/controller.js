@@ -15,6 +15,19 @@
 
 	Controller.prototype.getDataModel=()=>{model}
 
-window.app= window.app || {}
-window.app.Controller = Controller;
+	window.app= window.app || {}
+	window.app.Controller = Controller;
 })(window);
+
+var taskSubmitAction=function(ctx){
+	return function(e){
+		let task_form=document.getElementById('task_field');
+			if(task_form){
+				let task=task_form.childNodes[0].value;
+				let completionDate=task_form.childNodes[1].value;
+				ctx.model.addTask.call(ctx.model,task,completionDate);
+				//createView(ctx.model);
+				renderView(ctx.model,ctx);
+		}
+	}
+}

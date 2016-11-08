@@ -2,10 +2,10 @@
 	var noOfTasks = 0;
 
 	function Model (store) {
-		this.taskList = store.taskList||[];
-		this.noOfTasks = store.noOfTasks|| 0;
+		this.taskList = [];//store.taskList||[];
+		this.noOfTasks = 0;//store.noOfTasks|| 0;
 		noOfTasks=this.noOfTasks;
-		this.noOfCompletedTasks = store.noOfCompletedTasks || 0;
+		this.noOfCompletedTasks = 0;//store.noOfCompletedTasks || 0;
 	}
 
 	function Task (task,completionDate){
@@ -15,7 +15,7 @@
 		this.addedDate = new Date();
 	}
 
-	Model.prototype.addTask = (task,completionDate)=>{
+	Model.prototype.addTask = function(task,completionDate){
 		let new_task = new Task(task,completionDate);
 		this.taskList.push(new_task);
 	}
@@ -30,7 +30,7 @@
 				break;
 			}
 		}
-	};	
+	};
 
 	window.app = window.app || {};
 	window.app.Model = Model;
