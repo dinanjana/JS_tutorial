@@ -5,7 +5,9 @@
 	function View (){
 
 	}
-
+/*
+	This method generates view of the to do list
+*/
 	View.prototype.renderView =function(controller,fn1,fn2){
 		var container = document.getElementById('container');
 		while (container.firstChild) {
@@ -57,6 +59,22 @@
 		form_elem.appendChild(submit_elem);
 		form_elem.setAttribute('id','task_field');
 		return form_elem;
+	}
+
+	View.prototype.renderFilterButtons=function(fn1,fn2,fn3){
+			let filter = document.getElementById('filter');
+			let all = document.createElement('button');
+			all.innerHTML='All';
+			all.onclick=fn1;
+			filter.appendChild(all);
+			let completed = document.createElement('button');
+			completed.onclick=fn2;
+			completed.innerHTML='Show completed';
+			filter.appendChild(completed);
+			let notCompleted = document.createElement('button');
+			notCompleted.onclick=fn3;
+			notCompleted.innerHTML='Show active';
+			filter.appendChild(notCompleted);
 	}
 
 	window.app = window.app || {};

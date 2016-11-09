@@ -1,12 +1,14 @@
 (function  (window) {
 
 	function LocalStorage(name){
+		this.name = name;
 		if (typeof(Storage) !== "undefined") {
     // Code for localStorage/sessionStorage.
 				if(localStorage.getItem(name)==null){
 					this.storage = {};
 				}else{
 					this.storage = JSON.parse(localStorage.getItem(name));
+					console.log('Local storage is found' +this.storage.taskList);
 				}
 		} else {
     // Sorry! No Web Storage support..
@@ -29,8 +31,16 @@
 		}
 	}
 
-	LocalStorage.prototype.cleanup=(name)=>{
-		localStorage.setItem(name,this.storage);
+	LocalStorage.prototype.cleanup=function(model){
+		return function(){
+			let arr=[];
+			model.taskList.forEach((task)=>{
+					arr.push(task);
+			});
+			model.taskListasArray = arr;
+			localStorage.setItem('todoApp',JSON.stringify(model));
+			console.log('All data persisted!' + this.name);
+		}
 	}
 
 	window.app=window.app||{};

@@ -1,9 +1,15 @@
 (function (window){
 
+/*This object represents model and responsible for holding
+it in memory*/
 	function Model (store) {
 		this.taskList = new Map();//store.taskList||[];
-		this.noOfTasks = 0;//store.noOfTasks|| 0;
-		this.noOfCompletedTasks = 0;//store.noOfCompletedTasks || 0;
+		this.noOfTasks = store.noOfTasks||0;//store.noOfTasks|| 0;
+		this.noOfCompletedTasks = store.noOfCompletedTasks||0;//store.noOfCompletedTasks || 0;
+		for (var i in store.taskListasArray){
+			this.taskList.set(i,store.taskListasArray[i]);
+		}
+
 	}
 
 	function Task (task,completionDate,id){
@@ -24,7 +30,7 @@
 	}
 
 	Model.prototype.editTask = function(id,task,completionDate,completed){
-		let prevtask=this.taskList.get(id);
+		let prevtask=this.taskList.get(id.toString());
 		if(task){
 			prevtask.task = task;
 		}
