@@ -6,29 +6,43 @@
 
 	}
 
-	View.prototype.renderView =(view)=>{
-		document.getElementById('container').appendChild(view);
+	View.prototype.renderView =function(model,controller,fn1){
+		var container = document.getElementById('container');
+		while (container.firstChild) {
+	    container.removeChild(container.firstChild);
+		}
+		container.appendChild(this.createTaskTextField(controller,fn1));
+		container.appendChild(this.createView(model));
 	}
-	window.app = window.app || {};
-	window.app.View=View;
 
-})(window);
-
-	var createView=(model)=>{
+	View.prototype.createView=(model)=>{
 		let elem =document.createElement('div');
 		let elem1=document.createElement('ul');
 		model.taskList.forEach((task)=>{
 			let elem2=document.createElement('li');
-			let button_elem=document.createElement('button');
-			button_elem.innerHTML=task.task+
-				'. Added on '+task.addedDay+'. should complete on or before '+
-				task.completionDay;
-			elem2.appendChild(button_elem);
+			let div=document.createElement('div');
+			if(!task.completed){
+				div.innerHTML=task.task+
+					'. Added on '+task.addedDate+'. should complete on or before '+
+					task.completionDate;
+				div.addEventListener('click',(e)=>{
+					//model.
+					console.log('task marked as completed');
+				});
+			}else {
+				let strikethru =document.createElement('strike');
+				strikethru.innerHTML=task.task+
+					'. Added on '+task.addedDate+'. should complete on or before '+
+					task.completionDate;
+					div.appendChild(strikethru);
+			}
+			elem2.appendChild(div);
 			elem1.appendChild(elem2);
 		});
 		return elem.appendChild(elem1);
 	}
-	var createTaskTextField=function(controller){
+
+	View.prototype.createTaskTextField=function(controller,taskSubmitAction){
 		let tex_elem = document.createElement('input');
 		tex_elem.setAttribute('input','text');
 		tex_elem.setAttribute('name','task');
@@ -47,11 +61,7 @@
 		return form_elem;
 	}
 
-var renderView=function(model,controller){
-	var container = document.getElementById('container');
-	while (container.firstChild) {
-    container.removeChild(container.firstChild);
-}
-	container.appendChild(createTaskTextField(controller));
-	container.appendChild(createView(model));
-}
+	window.app = window.app || {};
+	window.app.View=View;
+
+})(window);

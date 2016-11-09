@@ -2,7 +2,7 @@
 	var noOfTasks = 0;
 
 	function Model (store) {
-		this.taskList = [];//store.taskList||[];
+		this.taskList = new Map();//store.taskList||[];
 		this.noOfTasks = 0;//store.noOfTasks|| 0;
 		noOfTasks=this.noOfTasks;
 		this.noOfCompletedTasks = 0;//store.noOfCompletedTasks || 0;
@@ -12,12 +12,13 @@
 		this.taskId = noOfTasks++;
 		this.task = task;
 		this.completionDate=completionDate;
-		this.addedDate = new Date();
+		this.addedDate = new Date().toString();
+		this.completed = false;
 	}
 
 	Model.prototype.addTask = function(task,completionDate){
 		let new_task = new Task(task,completionDate);
-		this.taskList.push(new_task);
+		this.taskList.set(new_task.taskID,new_task);
 	}
 
 	Model.prototype.removeTask = (taskId,completed)=>{

@@ -1,8 +1,10 @@
+
 (function (window){
 
 	function Controller(model,view){
 		this.model = model;
 		this.view = view;
+		this.view.renderView.call(view,model,this,taskSubmitAction);
 	}
 
 	Controller.prototype.addTask = (task,completionDate)=>{
@@ -17,6 +19,7 @@
 
 	window.app= window.app || {}
 	window.app.Controller = Controller;
+	//renderView(this.model,this);
 })(window);
 
 var taskSubmitAction=function(ctx){
@@ -26,8 +29,7 @@ var taskSubmitAction=function(ctx){
 				let task=task_form.childNodes[0].value;
 				let completionDate=task_form.childNodes[1].value;
 				ctx.model.addTask.call(ctx.model,task,completionDate);
-				//createView(ctx.model);
-				renderView(ctx.model,ctx);
+				ctx.view.renderView(ctx.model,ctx,taskSubmitAction);
 		}
 	}
 }
