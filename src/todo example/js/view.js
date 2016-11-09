@@ -6,29 +6,27 @@
 
 	}
 
-	View.prototype.renderView =function(model,controller,fn1){
+	View.prototype.renderView =function(controller,fn1,fn2){
 		var container = document.getElementById('container');
 		while (container.firstChild) {
 	    container.removeChild(container.firstChild);
 		}
 		container.appendChild(this.createTaskTextField(controller,fn1));
-		container.appendChild(this.createView(model));
+		container.appendChild(this.createView(controller,fn2));
 	}
 
-	View.prototype.createView=(model)=>{
+	View.prototype.createView=(controller,fn2)=>{
 		let elem =document.createElement('div');
 		let elem1=document.createElement('ul');
-		model.taskList.forEach((task)=>{
+		controller.model.taskList.forEach((task)=>{
 			let elem2=document.createElement('li');
 			let div=document.createElement('div');
 			if(!task.completed){
 				div.innerHTML=task.task+
 					'. Added on '+task.addedDate+'. should complete on or before '+
 					task.completionDate;
-				div.addEventListener('click',(e)=>{
-					//model.
-					console.log('task marked as completed');
-				});
+				let fn=fn2(controller,task.taskId);
+				div.addEventListener('click',fn);
 			}else {
 				let strikethru =document.createElement('strike');
 				strikethru.innerHTML=task.task+

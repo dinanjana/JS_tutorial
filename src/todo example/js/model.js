@@ -1,15 +1,13 @@
 (function (window){
-	var noOfTasks = 0;
 
 	function Model (store) {
 		this.taskList = new Map();//store.taskList||[];
 		this.noOfTasks = 0;//store.noOfTasks|| 0;
-		noOfTasks=this.noOfTasks;
 		this.noOfCompletedTasks = 0;//store.noOfCompletedTasks || 0;
 	}
 
-	function Task (task,completionDate){
-		this.taskId = noOfTasks++;
+	function Task (task,completionDate,id){
+		this.taskId = id;
 		this.task = task;
 		this.completionDate=completionDate;
 		this.addedDate = new Date().toString();
@@ -17,22 +15,27 @@
 	}
 
 	Model.prototype.addTask = function(task,completionDate){
-		let new_task = new Task(task,completionDate);
-		this.taskList.set(new_task.taskID,new_task);
+		let new_task = new Task(task,completionDate,this.noOfTasks++);
+		this.taskList.set(new_task.taskId,new_task);
 	}
 
-	Model.prototype.removeTask = (taskId,completed)=>{
-		for (var i = 0; i < this.taskList.length ; i++) {
-			if(this.taskList[i].taskId == taskId){
-				this.taskList.splice(i,1);
-				if(completed){
-					this.noOfCompletedTasks=++this.noOfCompletedTasks;
-				}
-				break;
-			}
-		}
-	};
+	Model.prototype.removeTask = function(taskId,completed){
+		this.taskList.delete(taskId);
+	}
 
+	Model.prototype.editTask = function(id,task,completionDate,completed){
+		let prevtask=this.taskList.get(id);
+		if(task){
+			prevtask.task = task;
+		}
+		if(completionDate){
+			prevtask.completionDate=completionDate;
+		}
+		if(completed){
+			prevtask.completed=completed;
+		}
+		this.taskList.set(prevtask.taskId,prevtask);
+	}
 	window.app = window.app || {};
 	window.app.Model = Model;
 })(window);
