@@ -7,8 +7,9 @@ which will fire correspondin to interactions of user with the view*/
 	function Controller(model,view){
 		this.model = model;
 		this.view = view;
-		this.view.renderView.call(view,this,this.taskSubmitAction,this.taskCompletionAction);
-		this.view.renderFilterButtons.call(view,()=>{},()=>{},()=>{});
+		this.view.renderInputField.call(view,this,this.taskSubmitAction);
+		this.view.renderView.call(view,this,this.taskCompletionAction);
+		this.view.renderFilterButtons.call(view,this,this.filterAction);
 	}
 
 	Controller.prototype.addTask = (task,completionDate)=>{
@@ -48,17 +49,20 @@ This action fires when user mark a task as completed
 		}
 	}
 
-	Controller.prototype.filterAction= function(ctx,type){
-		let fn;
-		switch(type){
-			case 1:
-				fn =function(e){
-							ctx.model.taskList.forEach((task)=>{
-								
-							})
-						};
+	Controller.prototype.filterAction= function(ctx,completed){
+		if(completed){
+			return function(e){
+				e.preventDefault();
+				ctx.view.renderFilteredView(ctx,ctx.model.getCompleted.call(ctx.model),true);
+			}
+		}else if(completed==undefined){
+			ctx.view.renderView(ctx,ctx.taskSubmitAction,ctx.taskCompletionAction);
+		}else{
+			return function(e){
+				e.preventDefault();
+				ctx.view.renderFilteredView(ctx,ctx.model.getActive.call(ctx.model),false,ctx.taskCompletionAction);
+			}
 		}
-
 	}
 
 	window.app= window.app || {}
