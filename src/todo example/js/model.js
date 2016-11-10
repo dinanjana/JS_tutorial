@@ -19,51 +19,49 @@ it in memory*/
 		this.completed = false;
 	}
 
-	Model.prototype={
-		addTask : function(task,completionDate){
-			let new_task = new Task(task,completionDate,this.noOfTasks);
-			this.taskList.set(new_task.taskId,new_task);
-			++this.noOfTasks;
-		},
+	Model.prototype.addTask=function(task,completionDate){
+		let new_task = new Task(task,completionDate,this.noOfTasks);
+		this.taskList.set(new_task.taskId,new_task);
+		++this.noOfTasks;
+	};
 
-		removeTask : function(taskId,completed){
-			this.taskList.delete(taskId);
-		},
+	Model.prototype.removeTask=function(taskId,completed){
+		this.taskList.delete(taskId);
+	};
 
-		editTask : function(id,task,completionDate,completed){
-			let prevtask=this.taskList.get(id.toString());
-			if(task){
-				prevtask.task = task;
-			}
-			if(completionDate){
-				prevtask.completionDate=completionDate;
-			}
-			if(completed){
-				prevtask.completed=completed;
-			}
-			this.taskList.set(prevtask.taskId.toString(),prevtask);
-		},
-
-		getCompleted: function(){
-			let ret = [];
-			this.taskList.forEach((task)=>{
-				if(task.completed){
-					ret.push(task);
-				}
-			});
-			return ret;
-		},
-
-		getActive: function(){
-			let ret = [];
-			this.taskList.forEach((task)=>{
-				if(!task.completed){
-					ret.push(task);
-				}
-			});
-			return ret;
+	Model.prototype.editTask=function(id,task,completionDate,completed){
+		let prevtask=this.taskList.get(id.toString());
+		if(task){
+			prevtask.task = task;
 		}
-	}
+		if(completionDate){
+			prevtask.completionDate=completionDate;
+		}
+		if(completed){
+			prevtask.completed=completed;
+		}
+		this.taskList.set(prevtask.taskId.toString(),prevtask);
+	};
+
+	Model.prototype.getCompleted=function(){
+		let ret = [];
+		this.taskList.forEach((task)=>{
+			if(task.completed){
+				ret.push(task);
+			}
+		});
+		return ret;
+	};
+
+	Model.prototype.getActive=function(){
+		let ret = [];
+		this.taskList.forEach((task)=>{
+			if(!task.completed){
+				ret.push(task);
+			}
+		});
+		return ret;
+	};
 
 	window.app = window.app || {};
 	window.app.Model = Model;

@@ -14,13 +14,13 @@ which will fire correspondin to interactions of user with the view*/
 
 	Controller.prototype.addTask = (task,completionDate)=>{
 		model.addTask(task,completionDate);
-	}
+	};
 
 	Controller.prototype.removeTask=(taskId,completed)=>{
 		model.removeTask(taskId,completed);
-	}
+	};
 
-	Controller.prototype.getDataModel=()=>{model}
+	Controller.prototype.getDataModel=()=>{model};
 
 /*
 This action fires to submission of new to do task
@@ -33,10 +33,11 @@ This action fires to submission of new to do task
 					let task=task_form.childNodes[0].value;
 					let completionDate=task_form.childNodes[1].value;
 					ctx.model.addTask.call(ctx.model,task,completionDate);
-					ctx.view.renderView(ctx,ctx.taskSubmitAction,ctx.taskCompletionAction);
+					ctx.view.renderInputField(ctx,ctx.taskSubmitAction);
+					ctx.view.renderView(ctx,ctx.taskCompletionAction);
 			}
 		}
-	}
+	};
 
 /*
 This action fires when user mark a task as completed
@@ -45,9 +46,9 @@ This action fires when user mark a task as completed
 		return function(e){
 			e.preventDefault();
 			ctx.model.editTask(id,null,null,true);
-			ctx.view.renderView(ctx,ctx.taskSubmitAction,ctx.taskCompletionAction);
+			ctx.view.renderView(ctx,ctx.taskCompletionAction);
 		}
-	}
+	};
 
 	Controller.prototype.filterAction= function(ctx,completed){
 		if(completed){
@@ -63,7 +64,7 @@ This action fires when user mark a task as completed
 				ctx.view.renderFilteredView(ctx,ctx.model.getActive.call(ctx.model),false,ctx.taskCompletionAction);
 			}
 		}
-	}
+	};
 
 	window.app= window.app || {}
 	window.app.Controller = Controller;

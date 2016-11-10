@@ -16,34 +16,32 @@
 		}
 	}
 
-	LocalStorage.prototype={
-		addItem:(task)=>{
-			this.storage.taskList.push(task);
-		},
+	LocalStorage.prototype.addItem=(task)=>{
+		this.storage.taskList.push(task);
+	};
 
-		removeItem:(taskID)=>{
-			let taskList=this.storage.taskList;
-			let len = this.storage.taskList.length;
-			for (var i=0; i<len ; i++ ){
-				if(taskList[i].taskID == taskID){
-					taskList.splice(i,1);
-					break;
-				}
+	LocalStorage.prototype.removeItem=(taskID)=>{
+		let taskList=this.storage.taskList;
+		let len = this.storage.taskList.length;
+		for (var i=0; i<len ; i++ ){
+			if(taskList[i].taskID == taskID){
+				taskList.splice(i,1);
+				break;
 			}
-		},
+		}
+	};
 
-		cleanup:function(model){
-			return function(){
-				let arr=[];
-				model.taskList.forEach((task)=>{
-						arr.push(task);
-				});
-				model.taskListasArray = arr;
-				localStorage.setItem('todoApp',JSON.stringify(model.taskListasArray));
-				console.log('All data persisted!' + this.name);
-			}
-		},
-	}
+	LocalStorage.prototype.cleanup=function(model){
+		return function(){
+			let arr=[];
+			model.taskList.forEach((task)=>{
+					arr.push(task);
+			});
+			model.taskListasArray = arr;
+			localStorage.setItem('todoApp',JSON.stringify(model.taskListasArray));
+			console.log('All data persisted!' + this.name);
+		}
+	};
 
 
 	window.app=window.app||{};
